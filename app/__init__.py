@@ -1,8 +1,8 @@
 from flask import Flask
 from config import config
 
-from flask.ext.bootstrap import Bootstrap
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -14,6 +14,18 @@ def create_app(config_name):
 	# Register our blueprints
 	from .default import default as default_blueprint
 	app.register_blueprint(default_blueprint)
+	from app.api.getdata import getdata
+	from app.api.dbconnect import getUsers
+
+
+	
+	@app.route("/apidata")
+	def apidata():
+		return getdata()
+	
+	@app.route("/getUserData")
+	def getUserData():
+		return getUsers()
 
 	# Initialize any extensions we are using
 	bootstrap.init_app(app)
